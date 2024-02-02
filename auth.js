@@ -14,4 +14,24 @@ function createAccessToken(user) {
 	return jwt.sign(data, secret, {});
 };
 
-export default createAccessToken;
+function verifyAccess(req, res, next){
+	let token = req.headers.authorization;
+
+	if (typeof token == undefined){
+		return res.status(401).send({ auth: "Authorization Failed. Invalid Token. "});
+	} else {
+		token = token.slice(7, token.length);
+		jwt.verify(token, secret,  (err, decodedToken) => {
+			if (err){
+				return res.send({ auth: "Authorization Failed"}) 
+			} else {
+				req.user = decodedToken;
+				next();
+			}
+		})
+	}
+}
+export { 
+	createAccessToken,
+	verifyAccess,
+};

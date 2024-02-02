@@ -3,13 +3,15 @@ import {
 	getUsers,
 	getUserById,
 	registerUser,
-	loginUser
+	loginUser,
+	changePassword
 } from "../controllers/user.js";
+import { verifyAccess } from "../auth.js";
 
 const router = Router();
 
 router.get('/', getUsers);
-router.get('/:id', getUserById);
+router.route('/:id').get(getUserById).put(verifyAccess, changePassword);
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 

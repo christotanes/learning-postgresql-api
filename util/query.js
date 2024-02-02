@@ -6,9 +6,14 @@ const registerUserQuery = "INSERT INTO users (username, password, email, full_na
 
 const loginUserQuery = "SELECT id, username, password, email, is_admin FROM users WHERE email = $1";
 
+const changePasswordQuery = "UPDATE users SET password = $1 WHERE id = $2 RETURNING id, username";
+const getUserPasswordQuery = "SELECT password FROM users WHERE id = $1";
+
 export {
 	getUsersQuery,
 	getUserByIdQuery,
 	registerUserQuery,
 	loginUserQuery,
+	changePasswordQuery,
+	getUserPasswordQuery,
 };

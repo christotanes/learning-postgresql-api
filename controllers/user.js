@@ -1,13 +1,15 @@
 import pool from "../database.js";
 import bcrypt from "bcrypt";
 import {
+	changePasswordQuery,
 	getUserByIdQuery,
+	getUserPasswordQuery,
 	getUsersQuery,
 	loginUserQuery,
 	registerUserQuery
-} from "../src/query.js";
-import validateNumInput from "../src/validateInput.js";
-import createAccessToken from "../auth.js";
+} from "../util/query.js";
+import validateNumInput from "../util/validateInput.js";
+import { createAccessToken } from "../auth.js";
 
 const getUsers = async (req, res) => {
 	try {
@@ -62,7 +64,26 @@ const loginUser = async (req, res) => {
 			}
 		}
 	} catch (error) {
-		res.send(500);
+		res.status(500).send("Internal Server Error");
+	}
+}
+
+const changePassword = async(req, res) => {
+	const id = parseInt(req.params.id);
+	const newPassword = req.body.password;
+
+	try{
+		const result = await pool.query(getUserPasswordQuery, [id]);
+		const isPasswordDifferent = bcrypt.compare(newPassword, result.rows[0].password);
+		if(!isPasswordDifferent){
+			const hashPassword = bcrypt.hash(newPassword, 10);
+			const updateResult = await pool.query(changePasswordQuery, [hashPassword, id]);
+			res.send(200).json(updateResult.rows);
+		} else {
+			res.status(401).send("Can't use same password");
+		}
+	} catch (error){
+		res.status(500).send("Internal Server Error");
 	}
 }
 
@@ -71,4 +92,5 @@ export {
 	getUserById,
 	registerUser,
 	loginUser,
+	changePassword,
 };
