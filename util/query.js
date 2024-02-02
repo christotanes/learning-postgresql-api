@@ -9,6 +9,12 @@ const loginUserQuery = "SELECT id, username, password, email, is_admin FROM user
 const changePasswordQuery = "UPDATE users SET password = $1 WHERE id = $2 RETURNING id, username";
 const getUserPasswordQuery = "SELECT password FROM users WHERE id = $1";
 
+const getAllProductsQuery = "SELECT * FROM products";
+
+const getProductsByShopQuery = "SELECT * FROM products p JOIN shops s ON p.shop_id = s.id AND s.id = $1";
+
+const checkShopExistsQuery = "SELECT id FROM shops s WHERE s.id = $1";
+
 export {
 	getUsersQuery,
 	getUserByIdQuery,
@@ -16,4 +22,7 @@ export {
 	loginUserQuery,
 	changePasswordQuery,
 	getUserPasswordQuery,
+	getAllProductsQuery,
+	getProductsByShopQuery,
+	checkShopExistsQuery,
 };
