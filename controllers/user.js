@@ -36,9 +36,9 @@ const registerUser = async (req, res) => {
 	const { username, password, email, full_name, contact_number } = req.body;
 	const contact_int = parseInt(contact_number);
 	validateNumInput(contact_int);
-	const hashPassword = bcrypt.hash(password, 10);
 
 	try {
+		const hashPassword = await bcrypt.hash(password, 10);
 		const results = await pool.query(registerUserQuery, [username, hashPassword, email, full_name, contact_int])
 		if (results) {
 			res.status(201).json(results.rows);
@@ -56,7 +56,7 @@ const loginUser = async (req, res) => {
 		if (!results) {
 			return res.status(404).send(`User not found`);
 		} else {
-			const isPasswordCorrect = bcrypt.compare(password, results.rows[0].password);
+			const isPasswordCorrect = bcrypt.compareSync(password, results.rows[0].password);
 			if (isPasswordCorrect) {
 				res.status(201).send({ access: createAccessToken(results.rows[0]) });
 			} else {
@@ -74,12 +74,12 @@ const changePassword = async(req, res) => {
 
 	try{
 		const result = await pool.query(getUserPasswordQuery, [id]);
-		const isPasswordDifferent = bcrypt.compare(newPassword, result.rows[0].password);
-		if(!isPasswordDifferent){
-			const hashPassword = bcrypt.hash(newPassword, 10);
+		const isPasswordDifferent = bcrypt.compareSync(newPassword, result.rows[0].password);
+		if(isPasswordDifferent === false){
+			const hashPassword = bcrypt.hashSync(newPassword, 10);
 			const updateResult = await pool.query(changePasswordQuery, [hashPassword, id]);
-			res.send(200).json(updateResult.rows);
-		} else {
+			res.sendStatus(200);
+		} else if (isPasswordDifferent === true){
 			res.status(401).send("Can't use same password");
 		}
 	} catch (error){
