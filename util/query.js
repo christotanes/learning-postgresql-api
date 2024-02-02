@@ -15,6 +15,8 @@ const getProductsByShopQuery = "SELECT * FROM products p JOIN shops s ON p.shop_
 
 const checkShopExistsQuery = "SELECT id FROM shops s WHERE s.id = $1";
 
+const addProductQuery = "INSERT INTO products (name, description, price, shop_id, category) VALUES ($1, $2, $3, $4, $5)"
+
 export {
 	getUsersQuery,
 	getUserByIdQuery,
@@ -25,4 +27,5 @@ export {
 	getAllProductsQuery,
 	getProductsByShopQuery,
 	checkShopExistsQuery,
+	addProductQuery,
 };

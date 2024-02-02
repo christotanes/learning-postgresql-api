@@ -31,7 +31,17 @@ function verifyAccess(req, res, next){
 		})
 	}
 }
+
+function verifyAdmin(req, res, next) {
+	if (!req.user.isAdmin) {
+		return res.status(403).send({ auth: "Forbidden access"})
+	} else {
+		next();
+	};
+};
+
 export { 
 	createAccessToken,
 	verifyAccess,
+	verifyAdmin,
 };

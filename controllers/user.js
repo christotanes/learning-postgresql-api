@@ -78,7 +78,9 @@ const changePassword = async(req, res) => {
 		if(isPasswordDifferent === false){
 			const hashPassword = bcrypt.hashSync(newPassword, 10);
 			const updateResult = await pool.query(changePasswordQuery, [hashPassword, id]);
-			res.sendStatus(200);
+			if (updateResult) {
+				res.sendStatus(200);
+			}
 		} else if (isPasswordDifferent === true){
 			res.status(401).send("Can't use same password");
 		}
