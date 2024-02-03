@@ -2,7 +2,7 @@ const getUsersQuery = "SELECT id, username, email, full_name, contact_number, cr
 
 const getUserByIdQuery = "SELECT id, username, email, full_name, contact_number, created_at, is_admin FROM users WHERE id = $1";
 
-const registerUserQuery = "INSERT INTO users (username, password, email, full_name, contact_number) VALUES ($1, $2, $3, $4, $5) RETURNING id, username";
+const registerUserQuery = "INSERT INTO users (username, password, email, full_name, contact_number) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, created_at";
 
 const loginUserQuery = "SELECT id, username, password, email, is_admin FROM users WHERE email = $1";
 
@@ -15,7 +15,7 @@ const getProductsByShopQuery = "SELECT * FROM products p JOIN shops s ON p.shop_
 
 const checkShopExistsQuery = "SELECT id FROM shops s WHERE s.id = $1";
 
-const addProductQuery = "INSERT INTO products (name, description, price, shop_id, category) VALUES ($1, $2, $3, $4, $5)"
+const addProductQuery = "INSERT INTO products (name, description, price, shop_id, category) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, created_at"
 
 const changeUserToAdminQuery = "UPDATE users SET is_admin = true WHERE id = $1 RETURNING id, username, is_admin"
 

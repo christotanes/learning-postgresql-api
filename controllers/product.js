@@ -1,64 +1,29 @@
-import pool from "../database.js";
-import checkShopExists from "../util/functions.js";
-import {
-	addProductQuery,
-	getAllProductsQuery,
-	getProductsByShopQuery,
-} from "../util/query.js";
-import validateNumInput from "../util/validateInput.js";
+import Product from "../Models/Product.js";
+import { errorHandler } from "../util/errorHandler.js";
 
-const getAllProducts = async (req, res) => {
+export async function getAllProducts (req, res){
 	try {
-		const results = await pool.query(getAllProductsQuery);
-		res.status(200).send(results.rows);
+		const products = await Product.getAll();
+		res.status(200).send(products);
 	} catch (error) {
-		res.status(500).send("Internal Server Error");
+		errorHandler(error, res);
 	}
 };
 
-const getProductsByShop = async (req, res) => {
-	const shopId = parseInt(req.params.shopId);
-	validateNumInput(shopId);
-
+export async function getProductsByShop (req, res){
 	try {
-		await checkShopExists(shopId);
-		
-		const results = await pool.query(getProductsByShopQuery, [shopId]);
-		res.status(200).send(results.rows);
+		const products = await Product.getProductsByShop(req.params.id);
+		res.status(200).send(products);
 	} catch (error) {
-		if (error.message === "Shop not found") {
-			res.status(404).send("Shop not found.");
-		} else {
-			res.status(500).send("Internal Server Error");
-		}
+		errorHandler(error, res);
 	};
 };
 
-const addProduct = async (req, res) => {
-	const { name, description, price, shop_id, category } = req.body;
-	const priceNum = parseFloat(price);
-	const shop_idNum = parseInt(shop_id);
-	validateNumInput(priceNum);
-	validateNumInput(shop_idNum);
-
+export async function addProduct (req, res){
 	try {
-		await checkShopExists(shop_idNum);
-		const results = await pool.query(addProductQuery, [name, description, priceNum, shop_idNum, category]);
-		if (results) {
-			res.status(201).send(results.rows);
-		}
-
+		const newProduct = await Product.create(req.body);
+		res.status(200).send(newProduct);
 	} catch (error) {
-		if (error.message === "Shop not found") {
-			res.status(404).send("Shop not found.");
-		} else {
-			res.status(500).send("Internal Server Error");
-		}
+		errorHandler(error, res);
 	}
-}
-
-export {
-	getAllProducts,
-	getProductsByShop,
-	addProduct,
 };

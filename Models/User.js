@@ -15,34 +15,37 @@ class User {
     static async getAll(){
         try {
             const results = await pool.query(getUsersQuery)
-            return results;
+            return results.rows;
         } catch (error) {
             throw error;
         }
-    }
+    };
 
     static async getById(id){
         try {
             await validateNumInput(parseInt(id));
             const results = await pool.query(getUserByIdQuery, [id]);
-            return results;
+            return results.rows[0];
         } catch (error) {
             throw error;
         }
-    }
+    };
 
     static async create({ username, password, email, full_name, contact_number }){
         try {
             const hashPassword = this.#hashPassword(password);
-            console.log(hashPassword)
             const contact_int = parseInt(contact_number);
             await validateNumInput(contact_int);
             const results = await pool.query(registerUserQuery, [username, hashPassword, email, full_name, contact_int])
-            return results;
+            if (results.rowCount === 1) {
+                return results.rows[0];
+            } else {
+                throw new Error("Create Unsuccessful");
+            }
         } catch (error) {
             throw error;
         }
-    }
+    };
 
     static async login({ email, password }){
         try {
@@ -52,7 +55,7 @@ class User {
             } else {
                 const isPasswordCorrect = this.#isPasswordCorrect(password, results.rows[0].password);
                 if (isPasswordCorrect) {
-                    return results;
+                    return results.rows[0];
                 } else {
                     return "Unauthorized Access";
                 }
@@ -60,7 +63,7 @@ class User {
         } catch (error) {
             throw error;
         }
-    }
+    };
 
     static async changePW(id, newPassword, userDetails){
         try{
@@ -75,6 +78,8 @@ class User {
                     const updateResult = await pool.query(changePasswordQuery, [hashPassword, id]);
                     if (updateResult.rowCount === 1) {
                         return true;
+                    } else {
+                        throw new Error("Update unsuccessful");
                     }
                 } else if (isPasswordSame === true){
                     return "Same password"
@@ -83,7 +88,7 @@ class User {
         } catch (error){
             throw error;
         }
-    }
+    };
 
     static async toAdmin(id){
         try {
@@ -91,19 +96,22 @@ class User {
             const result = await pool.query(changeUserToAdminQuery, [id]);
             if(result.rows[0].id === id && result.rows[0].is_admin === true){
                 return result;
+            } else {
+                throw new Error("Update unsuccessful");
             }
         } catch (error){
             throw error;
         }
-    }
+    };
+
     static #hashPassword (password){
         return bcrypt.hashSync(password, 10);
-    }
+    };
 
     static #isPasswordCorrect(password, oldPassword){
         return bcrypt.compareSync(password, oldPassword);
-    }
+    };
 
-}
+};
 
 export default User;

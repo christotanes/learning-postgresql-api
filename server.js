@@ -9,7 +9,8 @@ const port = 3000;
 
 app.use(cors());
 app.use(json());
-app.use("/", shopRoutes)
+
+app.use("/", shopRoutes);
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 
