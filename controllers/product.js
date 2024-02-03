@@ -12,7 +12,7 @@ export async function getAllProducts (req, res){
 
 export async function getProductsByShop (req, res){
 	try {
-		const products = await Product.getProductsByShop(req.params.id);
+		const products = await Product.getByShop(req.params.shopId);
 		res.status(200).send(products);
 	} catch (error) {
 		errorHandler(error, res);

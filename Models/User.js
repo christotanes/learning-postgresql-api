@@ -1,20 +1,12 @@
 import pool from "../database.js";
-import { 
-    getUsersQuery,
-    getUserByIdQuery,
-    registerUserQuery,
-    loginUserQuery,
-    getUserPasswordQuery,
-    changePasswordQuery,
-    changeUserToAdminQuery,
- } from "../util/query.js";
+import Query from "../util/query.js";
 import validateNumInput from "../util/validateInput.js";
 import bcrypt from 'bcrypt';
 
 class User {
     static async getAll(){
         try {
-            const results = await pool.query(getUsersQuery)
+            const results = await pool.query(Query.getUsersQuery);
             return results.rows;
         } catch (error) {
             throw error;
@@ -24,7 +16,7 @@ class User {
     static async getById(id){
         try {
             await validateNumInput(parseInt(id));
-            const results = await pool.query(getUserByIdQuery, [id]);
+            const results = await pool.query(Query.getUserByIdQuery, [id]);
             return results.rows[0];
         } catch (error) {
             throw error;
@@ -36,7 +28,7 @@ class User {
             const hashPassword = this.#hashPassword(password);
             const contact_int = parseInt(contact_number);
             await validateNumInput(contact_int);
-            const results = await pool.query(registerUserQuery, [username, hashPassword, email, full_name, contact_int])
+            const results = await pool.query(Query.registerUserQuery, [username, hashPassword, email, full_name, contact_int])
             if (results.rowCount === 1) {
                 return results.rows[0];
             } else {
@@ -49,7 +41,7 @@ class User {
 
     static async login({ email, password }){
         try {
-            const results = await pool.query(loginUserQuery, [email]);
+            const results = await pool.query(Query.loginUserQuery, [email]);
             if (results.rowCount === 0) {
                 return "User not found";
             } else {
@@ -71,11 +63,11 @@ class User {
             if (id != userDetails.id){
                 return "Incorrect Id";
             } else {
-                const result = await pool.query(getUserPasswordQuery, [id]);
+                const result = await pool.query(Query.getUserPasswordQuery, [id]);
                 const isPasswordSame = this.#isPasswordCorrect(newPassword, result.rows[0].password);
                 if(isPasswordSame === false){
                     const hashPassword = this.#hashPassword(newPassword, 10);
-                    const updateResult = await pool.query(changePasswordQuery, [hashPassword, id]);
+                    const updateResult = await pool.query(Query.changePasswordQuery, [hashPassword, id]);
                     if (updateResult.rowCount === 1) {
                         return true;
                     } else {
@@ -93,7 +85,7 @@ class User {
     static async toAdmin(id){
         try {
             await validateNumInput(parseInt(id));
-            const result = await pool.query(changeUserToAdminQuery, [id]);
+            const result = await pool.query(Query.changeUserToAdminQuery, [id]);
             if(result.rows[0].id === id && result.rows[0].is_admin === true){
                 return result;
             } else {

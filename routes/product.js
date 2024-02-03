@@ -15,6 +15,6 @@ const router = Router();
 router.route("/").get(getAllProducts)
 	.post(verifyAccess, verifyAdmin, addProduct);
 router.route("/:id").put(verifyAccess, verifyAdmin, editProduct);
-router.get("/:shopId", getProductsByShop);
+router.get("/:shopId/all", getProductsByShop);
 
 export default router;
