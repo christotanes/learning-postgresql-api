@@ -5,13 +5,16 @@ dotenv.config();
 const secret = process.env.SECRET_KEY; 
 
 function createAccessToken(user) {
-	const data = {
+	const payload = {
 		id: user.id,
 		username: user.username,
 		email: user.email,
 		isAdmin: user.is_admin
 	};
-	return jwt.sign(data, secret, {});
+	const options = {
+		expiresIn: '1hr'
+	}
+	return jwt.sign(payload, secret, options);
 };
 
 function verifyAccess(req, res, next){

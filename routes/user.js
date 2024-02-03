@@ -4,7 +4,7 @@ import {
 	getUserById,
 	registerUser,
 	loginUser,
-	changePassword
+	changePassword,
 } from "../controllers/user.js";
 import { verifyAccess } from "../auth.js";
 
