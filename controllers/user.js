@@ -61,12 +61,21 @@ export async function changePassword (req, res) {
 				res.status(401).send("Can't use same password");
 				break;
 			case "Incorrect Id":
-				res.status(409).send("Unauthorized Access")
+				res.status(409).send("Unauthorized Access. Incorrect id")
 				break;
 			default:
 				res.sendStatus(200);
 				break;
 		}
+	} catch (error){
+		res.status(500).send("Internal Server Error");
+	}
+};
+
+export async function changeUserToAdmin (req, res){
+	try{
+		await User.toAdmin(req.params.id);
+		res.send(204);
 	} catch (error){
 		res.status(500).send("Internal Server Error");
 	}

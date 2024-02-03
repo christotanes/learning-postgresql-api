@@ -6,6 +6,7 @@ import {
     loginUserQuery,
     getUserPasswordQuery,
     changePasswordQuery,
+    changeUserToAdminQuery,
  } from "../util/query.js";
 import validateNumInput from "../util/validateInput.js";
 import bcrypt from 'bcrypt';
@@ -84,6 +85,17 @@ class User {
         }
     }
 
+    static async toAdmin(id){
+        try {
+            await validateNumInput(parseInt(id));
+            const result = await pool.query(changeUserToAdminQuery, [id]);
+            if(result.rows[0].id === id && result.rows[0].is_admin === true){
+                return result;
+            }
+        } catch (error){
+            throw error;
+        }
+    }
     static #hashPassword (password){
         return bcrypt.hashSync(password, 10);
     }

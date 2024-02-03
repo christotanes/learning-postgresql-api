@@ -17,6 +17,8 @@ const checkShopExistsQuery = "SELECT id FROM shops s WHERE s.id = $1";
 
 const addProductQuery = "INSERT INTO products (name, description, price, shop_id, category) VALUES ($1, $2, $3, $4, $5)"
 
+const changeUserToAdminQuery = "UPDATE users SET is_admin = true WHERE id = $1 RETURNING id, username, is_admin"
+
 export {
 	getUsersQuery,
 	getUserByIdQuery,
@@ -28,4 +30,5 @@ export {
 	getProductsByShopQuery,
 	checkShopExistsQuery,
 	addProductQuery,
+	changeUserToAdminQuery,
 };
