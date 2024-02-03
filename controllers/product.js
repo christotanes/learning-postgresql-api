@@ -25,5 +25,14 @@ export async function addProduct (req, res){
 		res.status(200).send(newProduct);
 	} catch (error) {
 		errorHandler(error, res);
-	}
+	};
+};
+
+export async function editProduct(req, res) {
+	try {
+		const updatedProduct = await Product.edit(req.params.id, req.body);
+		res.status(204);
+	} catch (error){
+		errorHandler(error, res);
+	};
 };

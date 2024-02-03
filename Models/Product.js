@@ -2,6 +2,7 @@ import pool from "../database.js";
 import checkShopExists from "../util/functions.js";
 import { 
     addProductQuery,
+    editProductQuery,
     getAllProductsQuery, 
     getProductsByShopQuery,
  } from "../util/query";
@@ -16,7 +17,7 @@ class Product {
             throw error;
         };
     };
-
+    
     static async getProductsByShop(shop_id){
         try {
             await validateNumInput(parseInt(shop_id));
@@ -44,6 +45,21 @@ class Product {
             throw error;
         }
     };
+
+    static async edit(id, updates){
+        try {
+            await validateNumInput(parseInt(id));
+            const dynamicQuery = await editProductQuery(updates, id);
+            const result = await pool.query(dynamicQuery.query, dynamicQuery.values);
+            if (result.rowCount === 1) {
+                return result.rows[0];
+            } else {
+                throw new Error("Update Unsuccessful");
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
 };
 
 export default Product;
