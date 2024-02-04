@@ -19,6 +19,9 @@ class Query {
 									WHERE id = $1`;
 	static getAllProductsQuery = `SELECT * 
 									FROM products`;
+	static getActiveProductsQuery = `SELECT *
+									FROM products
+									WHERE is_active = true`;
 	static getProductsByShopQuery = `SELECT * 
 										FROM products p 
 										JOIN shops s 
@@ -53,7 +56,20 @@ class Query {
 		}
 	}
 
-	static changeUserToAdminQuery = "UPDATE users SET is_admin = true WHERE id = $1 RETURNING id, username, is_admin";
+	static changeUserToAdminQuery = `UPDATE users 
+										SET is_admin = true 
+										WHERE id = $1 
+										RETURNING id, username, is_admin`;
+
+	static archiveProductQuery = `UPDATE products 
+									SET is_active = false 
+									WHERE id = $1
+									RETURNING id, name, is_active`;
+	
+	static activateProductQuery = `UPDATE products
+									SET is_active = true
+									WHERE id = $1
+									RETURNING id, name, is_active`;
 };
 
 export default Query;
