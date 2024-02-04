@@ -1,6 +1,7 @@
 import pool from "../database.js";
 import checkShopExists from "../util/functions.js";
 import Query from "../util/query.js";
+import Validate from "../util/validateInput.js";
 import validateNumInput from "../util/validateInput.js";
 
 class Product {
@@ -15,9 +16,7 @@ class Product {
     
     static async getByShop(shop_id){
         try {
-            console.log(shop_id)
-            console.log(parseInt(shop_id))
-            await validateNumInput(parseInt(shop_id));
+            await Validate.isInputValid(parseInt(shop_id));
             await checkShopExists(shop_id);
             const results = await pool.query(Query.getProductsByShopQuery, [shop_id]);
             return results.rows;
@@ -26,11 +25,10 @@ class Product {
         };
     };
 
-    static async create({ name, description, price, shop_id, category }){
+    static async create(productDetails){
         try {
-            await validateNumInput(parseInt(shop_id));
-            await validateNumInput(parseFloat(price));
-
+            await Validate.isInputValid(productDetails);
+            const { name, description, price, shop_id, category } = productDetails;
             await checkShopExists(shop_id);
             const result = await pool.query(Query.addProductQuery, [name, description, price, shop_id, category]);
             if (result.rowCount === 1 ) {
@@ -45,7 +43,8 @@ class Product {
 
     static async edit(id, updates){
         try {
-            await validateNumInput(parseInt(id));
+            await Validate.isInputValid(parseInt(id));
+            await Validate.isInputValid(updates);
             const dynamicQuery = await Query.editProductQuery(updates, id);
             const result = await pool.query(dynamicQuery.query, dynamicQuery.values);
             if (result.rowCount === 1) {

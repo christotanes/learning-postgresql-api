@@ -34,17 +34,7 @@ export async function registerUser (req, res) {
 export async function loginUser (req, res) {
 	try {
 		const userFound = await User.login(req.body);
-		switch (userFound) {
-			case "User not found":
-				res.status(404).send(`User not found`);
-				break;
-			case "Unauthorized Access":
-				res.status(401).json({ error: "Unauthorized access" });
-				break;
-			default:
-				res.status(201).send({ access: createAccessToken(userFound) });
-				break;
-		}
+		res.status(201).send({ access: createAccessToken(userFound) });
 	} catch (error) {
 		errorHandler(error, res);
 	}
@@ -53,17 +43,7 @@ export async function loginUser (req, res) {
 export async function changePassword (req, res) {
 	try{
 		const updateResult = await User.changePW(req.params.id, req.body.password, req.user);
-		switch (updateResult) {
-			case "Same password":
-				res.status(401).send("Can't use same password");
-				break;
-			case "Incorrect Id":
-				res.status(409).send("Unauthorized Access. Incorrect id")
-				break;
-			default:
-				res.sendStatus(200);
-				break;
-		}
+		res.sendStatus(200);
 	} catch (error){
 		errorHandler(error, res);
 	}
