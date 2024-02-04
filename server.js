@@ -5,7 +5,7 @@ import productRoutes from "./routes/product.js";
 import shopRoutes from "./routes/shop.js";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 app.use(cors());
 app.use(json());
