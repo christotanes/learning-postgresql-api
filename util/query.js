@@ -70,6 +70,9 @@ class Query {
 									SET is_active = true
 									WHERE id = $1
 									RETURNING id, name, is_active`;
+
+	static getAllShopsQuery = `SELECT *
+								FROM shops`;
 };
 
 export default Query;
