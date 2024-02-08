@@ -15,7 +15,6 @@ const userDetails = {
 }
 
 const app = `${process.env.TEST_HOST}`;
-console.log(app);
 describe ('postgresql_user_test_suite', () => {
     it('GET users/ run', (done) => {
         chai.request(app).get('/users')

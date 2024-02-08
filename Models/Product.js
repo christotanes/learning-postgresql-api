@@ -1,6 +1,6 @@
 import pool from "../database.js";
 import checkShopExists from "../util/functions.js";
-import Query from "../util/query.js";
+import Query from "../util/Query.js";
 import Validate from "../util/validateInput.js";
 
 class Product {
@@ -10,6 +10,8 @@ class Product {
             return results.rows;
         } catch (error) {
             throw error;
+        } finally {
+            pool.release();
         };
     };
 
@@ -19,8 +21,10 @@ class Product {
             return results.rows;
         } catch (error) {
             throw error;
-        }
-    }
+        } finally {
+            pool.release();
+        };
+    };
     
     static async getByShop(shop_id){
         try {
@@ -30,6 +34,8 @@ class Product {
             return results.rows;
         } catch (error) {
             throw error;
+        } finally {
+            pool.release();
         };
     };
 
@@ -46,6 +52,8 @@ class Product {
             }
         } catch (error) {
             throw error;
+        } finally {
+            pool.release();
         };
     };
 
@@ -62,6 +70,8 @@ class Product {
             }
         } catch (error) {
             throw error;
+        } finally {
+            pool.release();
         };
     };
 
@@ -77,6 +87,8 @@ class Product {
             }
         } catch (error) {
             throw error;
+        } finally {
+            pool.release();
         };
     };
 
@@ -92,8 +104,10 @@ class Product {
             }
         } catch (error) {
             throw error;
-        }
-    }
+        } finally {
+            pool.release();
+        };
+    };
 };
 
 export default Product;

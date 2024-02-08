@@ -1,5 +1,5 @@
-import Shop from "../Models/Shop";
-import { errorHandler } from "../util/errorHandler";
+import Shop from "../Models/Shop.js";
+import { errorHandler } from "../util/errorHandler.js";
 
 export async function getAllShops(req, res) {
     try {

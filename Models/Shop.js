@@ -1,5 +1,5 @@
-import pool from "../database";
-import Query from "../util/query";
+import pool from "../database.js";
+import Query from "../util/Query.js";
 
 class Shop {
     static async getAll(){
@@ -8,7 +8,9 @@ class Shop {
             return results.rows;
         } catch (error) {
             throw error;
-        }
+        } finally {
+            pool.release();
+        };
     };
 };
 

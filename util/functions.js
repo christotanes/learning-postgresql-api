@@ -1,4 +1,4 @@
-import Query from "./query.js";
+import Query from "./Query.js";
 import pool from "../database.js";
 
 async function checkShopExists (shopId) {

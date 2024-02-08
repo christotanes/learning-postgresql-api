@@ -1,5 +1,5 @@
 import pool from "../database.js";
-import Query from "../util/query.js";
+import Query from "../util/Query.js";
 import Validate from "../util/validateInput.js";
 import bcrypt from 'bcrypt';
 
@@ -10,7 +10,9 @@ class User {
             return results.rows;
         } catch (error) {
             throw error;
-        }
+        } finally {
+            pool.release();
+        };
     };
 
     static async getById(id){
@@ -20,7 +22,9 @@ class User {
             return results.rows[0];
         } catch (error) {
             throw error;
-        }
+        } finally {
+            pool.release();
+        };
     };
 
     static async create(userDetails){
@@ -36,7 +40,9 @@ class User {
             }
         } catch (error) {
             throw error;
-        }
+        } finally {
+            pool.release();
+        };
     };
 
     static async login(userDetails){
@@ -56,7 +62,9 @@ class User {
             }
         } catch (error) {
             throw error;
-        }
+        } finally {
+            pool.release();
+        };
     };
 
     static async changePW(id, newPassword, userDetails){
@@ -82,7 +90,9 @@ class User {
             }
         } catch (error){
             throw error;
-        }
+        } finally {
+            pool.release();
+        };
     };
 
     static async toAdmin(id){
@@ -96,7 +106,9 @@ class User {
             }
         } catch (error){
             throw error;
-        }
+        } finally {
+            pool.release();
+        };
     };
 
     static #hashPassword (password){
