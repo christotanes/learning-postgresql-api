@@ -16,7 +16,7 @@ export function errorHandler(error, res) {
             break;
         
         case "Unauthorized access":
-            statusCode = 403;
+            statusCode = 401;
             errorMessage = error.message;
             break;
 
