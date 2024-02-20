@@ -8,8 +8,6 @@ class Shop {
             return results.rows;
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 };

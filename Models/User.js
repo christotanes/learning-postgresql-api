@@ -10,8 +10,6 @@ class User {
             return results.rows;
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -22,8 +20,6 @@ class User {
             return results.rows[0];
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -40,8 +36,6 @@ class User {
             }
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -62,8 +56,6 @@ class User {
             }
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -90,8 +82,6 @@ class User {
             }
         } catch (error){
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -106,8 +96,6 @@ class User {
             }
         } catch (error){
             throw error;
-        } finally {
-            pool.release();
         };
     };
 

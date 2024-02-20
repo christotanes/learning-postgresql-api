@@ -10,8 +10,6 @@ class Product {
             return results.rows;
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -21,8 +19,6 @@ class Product {
             return results.rows;
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
     
@@ -34,8 +30,6 @@ class Product {
             return results.rows;
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -52,8 +46,6 @@ class Product {
             }
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -70,8 +62,6 @@ class Product {
             }
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -87,8 +77,6 @@ class Product {
             }
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 
@@ -104,8 +92,6 @@ class Product {
             }
         } catch (error) {
             throw error;
-        } finally {
-            pool.release();
         };
     };
 };
