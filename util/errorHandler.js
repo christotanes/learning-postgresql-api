@@ -40,6 +40,6 @@ export function errorHandler(error, res) {
             }
             break;
     }
-
+    console.log(`Error: ${statusCode}, ${errorMessage}`)
     res.status(statusCode).send({ error: errorMessage });
 };

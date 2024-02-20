@@ -4,7 +4,8 @@ import Validate from "../util/validateInput.js";
 import bcrypt from 'bcrypt';
 
 class User {
-    static async getAll(){
+    static async getAll() {
+        console.log('GetAll accessed')
         try {
             const results = await pool.query(Query.getUsersQuery);
             return results.rows;
@@ -13,7 +14,8 @@ class User {
         };
     };
 
-    static async getById(id){
+    static async getById(id) {
+        console.log(`getById accessed id: ${id}`)
         try {
             await Validate.isInputValid(parseInt(id));
             const results = await pool.query(Query.getUserByIdQuery, [id]);
@@ -23,7 +25,8 @@ class User {
         };
     };
 
-    static async create(userDetails){
+    static async create(userDetails) {
+        console.log(`Create user accessed`)
         try {
             await Validate.isInputValid(userDetails);
             const { username, password, email, full_name, contact_number } = userDetails;
@@ -39,7 +42,8 @@ class User {
         };
     };
 
-    static async login(userDetails){
+    static async login(userDetails) {
+        console.log('Login accessed')
         try {
             await Validate.isInputValid(userDetails);
             const { email, password } = userDetails;
@@ -59,7 +63,8 @@ class User {
         };
     };
 
-    static async changePW(id, newPassword, userDetails){
+    static async changePW(id, newPassword, userDetails) {
+        console.log(`Change password accessed id: ${id}`)
         try{
             await Validate.isInputValid(parseInt(id));
             if (id != userDetails.id){
@@ -85,7 +90,8 @@ class User {
         };
     };
 
-    static async toAdmin(id){
+    static async toAdmin(id) {
+        console.log(`User toAdmin accessed id: ${id}`)
         try {
             await Validate.isInputValid(parseInt(id));
             const result = await pool.query(Query.changeUserToAdminQuery, [id]);

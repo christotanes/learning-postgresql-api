@@ -4,7 +4,8 @@ import Query from "../util/Query.js";
 import Validate from "../util/validateInput.js";
 
 class Product {
-    static async getAll(){
+    static async getAll() {
+        console.log(`Product getAll accessed`)
         try {
             const results = await pool.query(Query.getAllProductsQuery);
             return results.rows;
@@ -13,7 +14,8 @@ class Product {
         };
     };
 
-    static async getActive(){
+    static async getActive() {
+        console.log(`Product getActive accessed`)
         try {
             const results = await pool.query(Query.getActiveProductsQuery);
             return results.rows;
@@ -22,7 +24,8 @@ class Product {
         };
     };
     
-    static async getByShop(shop_id){
+    static async getByShop(shop_id) {
+        console.log(`Product getByShop accessed id: ${shop_id}`)
         try {
             await Validate.isInputValid(parseInt(shop_id));
             await checkShopExists(shop_id);
@@ -33,7 +36,8 @@ class Product {
         };
     };
 
-    static async create(productDetails){
+    static async create(productDetails) {
+        console.log(`Create product accessed`)
         try {
             await Validate.isInputValid(productDetails);
             const { name, description, price, shop_id, category } = productDetails;
@@ -49,7 +53,8 @@ class Product {
         };
     };
 
-    static async edit(id, updates){
+    static async edit(id, updates) {
+        console.log(`Edit product accessed id: ${id}`)
         try {
             await Validate.isInputValid(parseInt(id));
             await Validate.isInputValid(updates);
@@ -65,7 +70,8 @@ class Product {
         };
     };
 
-    static async archive(id){
+    static async archive(id) {
+        console.log(`Archive product accessed id: ${id}`)
         try {
             await Validate.isInputValid(parseInt(id));
 
@@ -80,7 +86,8 @@ class Product {
         };
     };
 
-    static async activate(id){
+    static async activate(id) {
+        console.log(`Activate product accessed id: ${id}`)
         try {
             await Validate.isInputValid(parseInt(id));
 
