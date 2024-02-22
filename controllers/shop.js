@@ -3,7 +3,7 @@ import { errorHandler } from "../util/errorHandler.js";
 
 export async function getAllShops(req, res) {
     try {
-        const shops = await Shop.getAllShops();
+        const shops = await Shop.getAll();
         res.status(200).send(shops);
     } catch (error) {
         errorHandler(error, res);

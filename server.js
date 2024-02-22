@@ -13,6 +13,7 @@ app.use(json());
 app.use("/", shopRoutes);
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
+app.use("/shops", shopRoutes);
 
 app.listen(port, () => {
 	console.log(`API now running at ${port}`);

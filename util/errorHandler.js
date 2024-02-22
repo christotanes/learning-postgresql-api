@@ -11,6 +11,7 @@ export function errorHandler(error, res) {
         case "Input empty":
         case "Max length reached":
         case "Input is Null or Undefined":
+        case "Confirm your password":
             statusCode = 400;
             errorMessage = error.message;
             break;

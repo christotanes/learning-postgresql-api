@@ -5,6 +5,7 @@ dotenv.config();
 const secret = process.env.SECRET_KEY; 
 
 function createAccessToken(user) {
+	console.log(`CreateAccessToken accessed`)
 	const payload = {
 		id: user.id,
 		username: user.username,
@@ -17,15 +18,15 @@ function createAccessToken(user) {
 	return jwt.sign(payload, secret, options);
 };
 
-function verifyAccess(req, res, next){
+function verifyAccess(req, res, next) {
+	console.log(`verifyAccess accessed`)
 	let token = req.headers.authorization;
-
 	if (typeof token == undefined){
 		return res.status(401).send({ auth: "Authorization Failed. Invalid Token. "});
 	} else {
 		token = token.slice(7, token.length);
 		jwt.verify(token, secret,  (err, decodedToken) => {
-			if (err){
+			if (err) {
 				return res.send({ auth: "Authorization Failed"}) 
 			} else {
 				req.user = decodedToken;
@@ -36,6 +37,7 @@ function verifyAccess(req, res, next){
 }
 
 function verifyAdmin(req, res, next) {
+	console.log(`verifyAdmin accessed`)
 	if (!req.user.isAdmin) {
 		return res.status(403).send({ auth: "Forbidden access"})
 	} else {

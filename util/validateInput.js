@@ -53,7 +53,7 @@ class Validate {
 		}
 	};
 
-	static #columnList = [ "username", "password", "email", "full_name", "contact_number", "name", "description", "price", "shop_id", "category"]
+	static #columnList = [ "username", "password", "email", "full_name", "contact_number", "confirmPassword", "name", "description", "price", "shop_id", "category"]
 };
 
 export default Validate;

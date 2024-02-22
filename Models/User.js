@@ -29,7 +29,10 @@ class User {
         console.log(`Create user accessed`)
         try {
             await Validate.isInputValid(userDetails);
-            const { username, password, email, full_name, contact_number } = userDetails;
+            const { username, password, email, full_name, contact_number, confirmPassword } = userDetails;
+            if (password !== confirmPassword) {
+                throw new Error("Confirm your password")
+            }
             const hashPassword = this.#hashPassword(password);
             const results = await pool.query(Query.registerUserQuery, [username, hashPassword, email, full_name, contact_number])
             if (results.rowCount === 1) {
@@ -47,6 +50,7 @@ class User {
         try {
             await Validate.isInputValid(userDetails);
             const { email, password } = userDetails;
+            console.log(userDetails)
             const results = await pool.query(Query.loginUserQuery, [email]);
             if (results.rowCount === 0) {
                 throw new Error("User not found");
@@ -109,8 +113,8 @@ class User {
         return bcrypt.hashSync(password, 10);
     };
 
-    static #isPasswordCorrect(password, oldPassword){
-        return bcrypt.compareSync(password, oldPassword);
+    static #isPasswordCorrect(password, correctPassword){
+        return bcrypt.compareSync(password, correctPassword);
     };
 
 };
