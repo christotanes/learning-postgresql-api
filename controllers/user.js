@@ -54,7 +54,9 @@ export async function changePassword(req, res) {
       req.body.password,
       req.user
     );
-    res.sendStatus(200);
+    res
+      .status(204)
+      .send({ message: `User id:${req.params.id} changed password` });
   } catch (error) {
     errorHandler(error, res);
   }
@@ -63,7 +65,9 @@ export async function changePassword(req, res) {
 export async function changeUserToAdmin(req, res) {
   try {
     await User.toAdmin(req.params.id);
-    res.send(204);
+    res
+      .status(204)
+      .send({ message: `User id:${req.params.id} updated to Admin` });
   } catch (error) {
     errorHandler(error, res);
   }

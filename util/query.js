@@ -18,8 +18,10 @@ class Query {
 									WHERE id = $1`;
   static getAllProductsQuery = `SELECT * 
 									FROM products`;
-  static getActiveProductsQuery = `SELECT *
-									FROM products
+  static getActiveProductsQuery = `SELECT p.id, p.name, p.description, p.price, p.created_at, p.category, s.name
+									FROM products AS p
+									JOIN shops AS s
+									ON p.shop_id = s.id
 									WHERE is_active = true`;
   static getProductsByShopQuery = `SELECT * 
 										FROM products p 
