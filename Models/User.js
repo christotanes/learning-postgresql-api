@@ -28,6 +28,7 @@ class User {
   static async create(userDetails) {
     console.log(`Create user accessed`);
     try {
+      console.log(typeof userDetails.contact_number);
       await Validate.isInputValid(userDetails);
       const {
         username,
@@ -49,7 +50,7 @@ class User {
         contact_number,
       ]);
       if (results.rowCount === 1) {
-        return results.rows[0];
+        return results;
       } else {
         throw new Error("Create Unsuccessful");
       }

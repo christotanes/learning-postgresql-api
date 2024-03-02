@@ -24,7 +24,7 @@ export async function registerUser(req, res) {
   try {
     const newUser = await User.create(req.body);
     if (newUser) {
-      res.status(201).json(newUser);
+      res.status(201).send({ message: "User Created" });
     }
   } catch (error) {
     errorHandler(error, res);
@@ -33,10 +33,14 @@ export async function registerUser(req, res) {
 
 export async function loginUser(req, res) {
   try {
-    const userFound = await User.login(req.body);
+    const userResponse = await User.login(req.body);
     res.status(201).send({
-      user: userFound.username,
-      token: createAccessToken(userFound),
+      user: {
+        id: userResponse.id,
+        username: userResponse.username,
+        isAdmin: userResponse.is_admin,
+      },
+      token: createAccessToken(userResponse),
     });
   } catch (error) {
     errorHandler(error, res);
