@@ -49,7 +49,8 @@ export async function editProduct(req, res) {
 export async function archiveProduct(req, res) {
   try {
     await Product.archive(req.params.id);
-    res.status(204).send({ message: `Product id:${req.params.id} archived` });
+    res.sendStatus(204);
+    console.log({ message: `Product id:${req.params.id} archived` });
   } catch (error) {
     errorHandler(error, res);
   }
@@ -58,7 +59,8 @@ export async function archiveProduct(req, res) {
 export async function activateProduct(req, res) {
   try {
     await Product.activate(req.params.id);
-    res.status(204).send({ message: `Product id:${req.params.id} activated` });
+    res.sendStatus(204);
+    console.log({ message: `Product id:${req.params.id} activated` });
   } catch (error) {
     errorHandler(error, res);
   }
